@@ -226,13 +226,46 @@
                         <!-- Los beneficios se cargarán dinámicamente -->
                     </div>
                 </section>
-                
+
                 <!-- Sección Perfil -->
                 <section id="perfil" class="section">
+                    <!-- Información del Perfil Móvil (solo se muestra en responsive) -->
+                    <div class="mobile-profile-overview" id="mobileProfileOverview">
+                        <div class="mobile-profile-card">
+                            <div class="mobile-profile-header">
+                                <div class="mobile-avatar">
+                                    <img src="assets/avatar-01.png" alt="Ana Martínez" id="mobileProfileAvatar">
+                                </div>
+                                <div class="mobile-profile-info">
+                                    <h3 id="mobileProfileName">Ana Martínez</h3>
+                                    <span class="mobile-profile-level">Nivel 5 - Ahorrista</span>
+                                </div>
+                            </div>
+                            <div class="mobile-profile-stats">
+                                <div class="mobile-stat">
+                                    <div class="mobile-stat-value">1,250</div>
+                                    <div class="mobile-stat-label">Puntos</div>
+                                </div>
+                                <div class="mobile-stat">
+                                    <div class="mobile-stat-value">$1,850</div>
+                                    <div class="mobile-stat-label">Ahorro</div>
+                                </div>
+                                <div class="mobile-stat">
+                                    <div class="mobile-stat-value">24</div>
+                                    <div class="mobile-stat-label">Días</div>
+                                </div>
+                                <div class="mobile-stat">
+                                    <div class="mobile-stat-value">8/15</div>
+                                    <div class="mobile-stat-label">Logros</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="profile-content">
                         <div class="profile-edit">
                             <div class="profile-header-main">
-                                <h3>Mi Perfil</h3>
+                                <h3>Configuración de Perfil</h3>
                                 <div class="theme-toggle-container">
                                     <span class="theme-label">Modo Claro</span>
                                     <label class="theme-switch">
@@ -248,6 +281,8 @@
                                     <img src="assets/avatar-01.png" alt="Avatar actual" id="currentAvatarImg">
                                 </div>
                                 <div class="avatar-controls">
+                                    <h4>Avatar Personal</h4>
+                                    <p>Selecciona una imagen que te represente</p>
                                     <button class="change-avatar-btn" id="changeAvatarBtn">
                                         <i class="fas fa-camera"></i> Cambiar Avatar
                                     </button>
@@ -255,20 +290,20 @@
                             </div>
                             
                             <div class="form-group">
-                                <label class="form-label">Nombre</label>
-                                <input type="text" class="form-input" id="userNameInput" value="Ana Martínez">
+                                <label class="form-label">Nombre Completo</label>
+                                <input type="text" class="form-input" id="userNameInput" value="Ana Martínez" placeholder="Ingresa tu nombre">
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">Correo Electrónico</label>
-                                <input type="email" class="form-input" value="ana.martinez@email.com">
+                                <input type="email" class="form-input" value="ana.martinez@email.com" placeholder="tu.email@ejemplo.com">
                             </div>
                             
                             <div class="form-group">
                                 <label class="form-label">Meta de Ahorro Mensual</label>
                                 <div class="input-with-icon">
                                     <span class="input-icon">$</span>
-                                    <input type="text" class="form-input" value="300" style="padding-left: 30px;">
+                                    <input type="number" class="form-input" value="300" placeholder="500" style="padding-left: 30px;">
                                 </div>
                             </div>
                             
@@ -285,97 +320,139 @@
                             </div>
                             
                             <div class="form-group">
-                                <label class="form-label">Notificaciones</label>
+                                <label class="form-label">Preferencias de Notificaciones</label>
                                 <div class="notifications-settings">
                                     <label class="checkbox-label">
-                                        <input type="checkbox" checked> Recordatorios de ahorro
+                                        <input type="checkbox" checked> 
+                                        <span class="checkmark"></span>
+                                        Recordatorios de ahorro
                                     </label>
                                     <label class="checkbox-label">
-                                        <input type="checkbox" checked> Progreso de retos
+                                        <input type="checkbox" checked>
+                                        <span class="checkmark"></span>
+                                        Progreso de retos
                                     </label>
                                     <label class="checkbox-label">
-                                        <input type="checkbox"> Noticias y ofertas
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        Noticias y ofertas
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" checked>
+                                        <span class="checkmark"></span>
+                                        Actualizaciones de amigos
                                     </label>
                                 </div>
                             </div>
                             
-                            <button class="redeem-btn" id="saveProfileBtn" style="width: 100%;">
-                                <i class="fas fa-save"></i> Guardar Cambios
-                            </button>
+                            <div class="profile-actions">
+                                <button class="save-btn" id="saveProfileBtn">
+                                    <i class="fas fa-save"></i> Guardar Cambios
+                                </button>
+                                <button class="cancel-btn">
+                                    <i class="fas fa-times"></i> Cancelar
+                                </button>
+                            </div>
                         </div>
                         
                         <div class="profile-stats-large">
                             <div class="stats-header">
-                                <h3>Mi Progreso</h3>
-                                <span class="stats-period">Este Mes</span>
-                            </div>
-                            
-                            <div class="stat-card highlight">
-                                <div class="stat-icon">
-                                    <i class="fas fa-piggy-bank"></i>
-                                </div>
-                                <div class="stat-value-large">$1,850</div>
-                                <div class="stat-label">Total Ahorrado</div>
-                                <div class="stat-trend positive">
-                                    <i class="fas fa-arrow-up"></i> 12% este mes
+                                <h3>Mi Progreso General</h3>
+                                <div class="stats-filter">
+                                    <select class="stats-period-select">
+                                        <option value="month">Este Mes</option>
+                                        <option value="quarter">Este Trimestre</option>
+                                        <option value="year">Este Año</option>
+                                        <option value="all">Todo el Tiempo</option>
+                                    </select>
                                 </div>
                             </div>
                             
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <i class="fas fa-calendar-check"></i>
-                                </div>
-                                <div class="stat-value-large">24</div>
-                                <div class="stat-label">Días Consecutivos</div>
-                                <div class="stat-trend positive">
-                                    <i class="fas fa-fire"></i> Racha activa
-                                </div>
-                            </div>
-                            
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <i class="fas fa-trophy"></i>
-                                </div>
-                                <div class="stat-value-large">8</div>
-                                <div class="stat-label">Logros Desbloqueados</div>
-                                <div class="stat-progress">
-                                    <div class="mini-progress-bar">
-                                        <div class="mini-progress-fill" style="width: 53%"></div>
+                            <div class="stats-grid">
+                                <div class="stat-card highlight">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-piggy-bank"></i>
                                     </div>
-                                    <span>8/15</span>
+                                    <div class="stat-content">
+                                        <div class="stat-value-large">$1,850</div>
+                                        <div class="stat-label">Total Ahorrado</div>
+                                        <div class="stat-trend positive">
+                                            <i class="fas fa-arrow-up"></i> 12% vs mes anterior
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <i class="fas fa-chart-line"></i>
+                                
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-value-large">24</div>
+                                        <div class="stat-label">Días Consecutivos</div>
+                                        <div class="stat-trend positive">
+                                            <i class="fas fa-fire"></i> Racha activa
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="stat-value-large">65%</div>
-                                <div class="stat-label">Progreso Meta Actual</div>
-                                <div class="stat-trend">
-                                    <i class="fas fa-clock"></i> 15 días restantes
+                                
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-trophy"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-value-large">8/15</div>
+                                        <div class="stat-label">Logros Desbloqueados</div>
+                                        <div class="stat-progress">
+                                            <div class="mini-progress-bar">
+                                                <div class="mini-progress-fill" style="width: 53%"></div>
+                                            </div>
+                                            <span class="progress-text">53% completado</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-value-large">65%</div>
+                                        <div class="stat-label">Progreso Meta Actual</div>
+                                        <div class="stat-trend">
+                                            <i class="fas fa-clock"></i> 15 días restantes
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-coins"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-value-large">1,250</div>
+                                        <div class="stat-label">Puntos Acumulados</div>
+                                        <div class="stat-trend positive">
+                                            <i class="fas fa-star"></i> Nivel 5
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-value-large">3</div>
+                                        <div class="stat-label">Amigos Conectados</div>
+                                        <div class="stat-trend">
+                                            <i class="fas fa-user-plus"></i> Agregar más
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
-
-                <!-- Modal de selección de avatar -->
-                <div class="modal" id="avatarModal">
-                    <div class="modal-content">
-                        <span class="close-modal" id="closeAvatarModal">&times;</span>
-                        <h3>Seleccionar Avatar</h3>
-                        <div class="modal-body">
-                            <div class="avatar-grid" id="avatarGrid">
-                                <!-- Los avatares se cargarán dinámicamente -->
-                            </div>
-                            <div class="modal-actions">
-                                <button class="cancel-btn" id="cancelAvatarSelect">Cancelar</button>
-                                <button class="apply-btn" id="confirmAvatarSelect">Aplicar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </main>
         

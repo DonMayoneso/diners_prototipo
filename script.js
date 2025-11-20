@@ -14,7 +14,7 @@ function initApp() {
     loadAchievements();
     loadBenefits();
     loadFriends();
-    loadChallenges();
+    loadChallenges('todos');
     
     // Configurar funcionalidades
     setupAvatarSelection();
@@ -24,6 +24,10 @@ function initApp() {
     setupChallengeFilters();
     setupChestTimer();
     updateChestProgress();
+    
+    // Nuevas funcionalidades
+    setupThemeToggle();
+    setupAvatarSystem();
     
     // Configurar botón del cofre
     const openChestBtn = document.getElementById('openChestBtn');
@@ -187,7 +191,7 @@ function loadFriends() {
     console.log('Amigos cargados:', friendsData.length);
 }
 
-function loadChallenges() {
+function loadChallenges(activeFilter = 'todos') {
     const challengesGrid = document.getElementById('challengesGrid');
     if (!challengesGrid) {
         console.log('challengesGrid no encontrado');
@@ -196,19 +200,34 @@ function loadChallenges() {
     
     challengesGrid.innerHTML = '';
     
-    // Obtener filtro activo
-    const activeFilter = document.querySelector('.filter-btn.active');
-    const activeFilterValue = activeFilter ? activeFilter.getAttribute('data-filter') : 'todos';
-    
-    console.log('Filtro activo:', activeFilterValue);
+    console.log('Filtro activo:', activeFilter);
     
     // Filtrar retos
     const filteredChallenges = challengesData.filter(challenge => {
-        if (activeFilterValue === 'todos') return true;
-        return challenge.tipo === activeFilterValue;
+        if (activeFilter === 'todos') return true;
+        
+        // Mapear los filtros a los tipos de retos
+        const filterMap = {
+            'diarios': 'diario',
+            'semanales': 'semanal',
+            'mensuales': 'mensual'
+        };
+        
+        return challenge.tipo === filterMap[activeFilter];
     });
     
     console.log('Retos filtrados:', filteredChallenges.length);
+    
+    if (filteredChallenges.length === 0) {
+        challengesGrid.innerHTML = `
+            <div class="no-challenges">
+                <i class="fas fa-inbox"></i>
+                <h3>No hay retos disponibles</h3>
+                <p>No se encontraron retos para el filtro seleccionado.</p>
+            </div>
+        `;
+        return;
+    }
     
     filteredChallenges.forEach(challenge => {
         const challengeCard = document.createElement('div');
@@ -229,7 +248,7 @@ function loadChallenges() {
                 <p class="challenge-description">${challenge.descripcion}</p>
                 
                 <div class="challenge-meta">
-                    <span>Dificultad: ${challenge.dificultad}</span>
+                    <span class="difficulty ${challenge.dificultad}">${challenge.dificultad}</span>
                     <span>${challenge.progreso}/${challenge.total}</span>
                 </div>
                 
@@ -244,10 +263,10 @@ function loadChallenges() {
                 
                 <div class="challenge-actions">
                     ${isCompleted ? 
-                        '<button class="action-btn complete-btn" disabled>Completado</button>' : 
+                        '<button class="action-btn complete-btn" disabled><i class="fas fa-check"></i> Completado</button>' : 
                         isActive ? 
-                            '<button class="action-btn complete-btn">Completar</button>' :
-                            '<button class="action-btn start-btn">Comenzar</button>'
+                            '<button class="action-btn complete-btn"><i class="fas fa-flag-checkered"></i> Completar</button>' :
+                            '<button class="action-btn start-btn"><i class="fas fa-play"></i> Comenzar</button>'
                     }
                 </div>
             </div>
@@ -325,22 +344,160 @@ function setupProfileSave() {
     
     saveProfileBtn.addEventListener('click', function() {
         const newName = userNameInput.value;
-        const selectedAvatar = document.querySelector('.avatar-option.selected i').className;
         
-        // Actualizar nombre en el sidebar
-        document.getElementById('user-name').textContent = newName;
+        // Actualizar nombre en todos los lugares
+        updateProfileName(newName);
         
         // Mostrar confirmación
         showNotification('Perfil actualizado correctamente');
         
-        console.log('Perfil guardado:', { nombre: newName, avatar: selectedAvatar });
+        console.log('Perfil guardado:', { nombre: newName });
     });
 }
 
-// ========== SISTEMA DE ROADMAP ==========
+function updateProfileName(newName) {
+    // Actualizar en el sidebar
+    const sidebarName = document.getElementById('user-name');
+    if (sidebarName) {
+        sidebarName.textContent = newName;
+    }
+    
+    // Actualizar en el perfil móvil
+    const mobileProfileName = document.getElementById('mobileProfileName');
+    if (mobileProfileName) {
+        mobileProfileName.textContent = newName;
+    }
+    
+    // Guardar en localStorage
+    localStorage.setItem('userName', newName);
+}
+
+function updateProfileAvatar(avatarSrc) {
+    // Actualizar avatar en el perfil móvil
+    const mobileProfileAvatar = document.getElementById('mobileProfileAvatar');
+    if (mobileProfileAvatar) {
+        mobileProfileAvatar.src = avatarSrc;
+    }
+    
+    // Guardar en localStorage
+    localStorage.setItem('selectedAvatar', avatarSrc);
+}
+
+// ========== SISTEMA DE TEMA OSCURO ==========
+function setupThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    
+    // Aplicar tema guardado
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    if (savedTheme === 'dark') {
+        themeToggle.checked = true;
+    }
+    
+    themeToggle.addEventListener('change', function() {
+        if (this.checked) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            showNotification('Tema oscuro activado');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+            showNotification('Tema claro activado');
+        }
+    });
+}
+
+// ========== SISTEMA DE AVATAR CON IMÁGENES ==========
+function setupAvatarSystem() {
+    const changeAvatarBtn = document.getElementById('changeAvatarBtn');
+    const avatarModal = document.getElementById('avatarModal');
+    const closeAvatarModal = document.getElementById('closeAvatarModal');
+    const cancelAvatarSelect = document.getElementById('cancelAvatarSelect');
+    const confirmAvatarSelect = document.getElementById('confirmAvatarSelect');
+    const avatarGrid = document.getElementById('avatarGrid');
+    const currentAvatarImg = document.getElementById('currentAvatarImg');
+    
+    // Cargar grid de avatares
+    avatarGrid.innerHTML = '';
+    for (let i = 1; i <= 6; i++) {
+        const avatarOption = document.createElement('div');
+        avatarOption.className = 'avatar-option-modal';
+        avatarOption.setAttribute('data-avatar', `assets/avatar-0${i}.png`);
+        
+        const img = document.createElement('img');
+        img.src = `assets/avatar-0${i}.png`;
+        img.alt = `Avatar ${i}`;
+        img.onerror = function() {
+            // Si la imagen no existe, usar un placeholder SVG
+            this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNDAiIHI9IjIwIiBmaWxsPSIjOERCOUZGIi8+CjxyZWN0IHg9IjI1IiB5PSI3MCIgd2lkdGg9IjUwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjOERCOUZGIi8+Cjwvc3ZnPgo=';
+        };
+        
+        avatarOption.appendChild(img);
+        avatarOption.addEventListener('click', function() {
+            document.querySelectorAll('.avatar-option-modal').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            this.classList.add('selected');
+        });
+        
+        avatarGrid.appendChild(avatarOption);
+    }
+    
+    // Abrir modal
+    changeAvatarBtn.addEventListener('click', function() {
+        avatarModal.style.display = 'block';
+    });
+    
+    // Cerrar modal
+    const closeModal = function() {
+        avatarModal.style.display = 'none';
+    };
+    
+    closeAvatarModal.addEventListener('click', closeModal);
+    cancelAvatarSelect.addEventListener('click', closeModal);
+    
+    // Confirmar selección
+    confirmAvatarSelect.addEventListener('click', function() {
+        const selectedAvatar = document.querySelector('.avatar-option-modal.selected');
+        if (selectedAvatar) {
+            const avatarSrc = selectedAvatar.getAttribute('data-avatar');
+            currentAvatarImg.src = avatarSrc;
+            updateProfileAvatar(avatarSrc);
+            showNotification('Avatar actualizado correctamente');
+            closeModal();
+        } else {
+            showNotification('Por favor selecciona un avatar', 'error');
+        }
+    });
+    
+    // Cargar avatar guardado
+    const savedAvatar = localStorage.getItem('selectedAvatar') || 'assets/avatar-01.png';
+    currentAvatarImg.src = savedAvatar;
+    updateProfileAvatar(savedAvatar);
+    
+    // Cargar nombre guardado
+    const savedName = localStorage.getItem('userName');
+    if (savedName) {
+        updateProfileName(savedName);
+        const userNameInput = document.getElementById('userNameInput');
+        if (userNameInput) {
+            userNameInput.value = savedName;
+        }
+    }
+    
+    // Cerrar modal al hacer clic fuera
+    window.addEventListener('click', function(event) {
+        if (event.target === avatarModal) {
+            closeModal();
+        }
+    });
+}
+
+// ========== SISTEMA DE ROADMAP MEJORADO ==========
 function setupRoadmap() {
     console.log('Configurando roadmap...');
     
+    // ========== VARIANTES ==========
     const variants = {
         1: {
             color: '#f59e0b',
@@ -365,6 +522,7 @@ function setupRoadmap() {
     // ========== VARIABLES GLOBALES ==========
     let currentVariant = 1;
     let totalLen = 0;
+    let lastActiveIndex = -1;
     let currentGoal = 120;
     let currentDeposit = 60;
 
@@ -376,6 +534,7 @@ function setupRoadmap() {
     const flagGroup = document.getElementById('flagGroup');
     const goalLabel = document.getElementById('goalLabel');
     const depositLabel = document.getElementById('depositLabel');
+    const roadmapCard = document.querySelector('.roadmap-card');
 
     // Verificar que los elementos existan
     if (!svg || !bgPath || !progPath) {
@@ -384,6 +543,15 @@ function setupRoadmap() {
     }
 
     /* ===== FUNCIONES DEL ROADMAP ===== */
+    function svgPointToClient(x, y){
+        const pt = svg.createSVGPoint();
+        pt.x = x; pt.y = y;
+        const ctm = svg.getScreenCTM();
+        if (!ctm) return {x, y};
+        const transformed = pt.matrixTransform(ctm);
+        return {x: transformed.x, y: transformed.y};
+    }
+
     function drawVariant(variantId){
         currentVariant = variantId;
         const v = variants[variantId];
@@ -495,25 +663,48 @@ function setupRoadmap() {
         circles.forEach((c, i) => {
             const f = (i+1) / circles.length;
             const shouldBeActive = pct >= f - 0.001;
+            const alreadyActive = c.classList.contains('active');
             
-            if (shouldBeActive) {
+            if (shouldBeActive && !alreadyActive) {
                 c.classList.add('active');
                 c.setAttribute('fill', variants[currentVariant].color);
-            } else {
+                if (i > lastActiveIndex) {
+                    lastActiveIndex = i;
+                    triggerCelebrationAtCircle(c);
+                }
+            } else if (!shouldBeActive && alreadyActive) {
                 c.classList.remove('active');
                 c.setAttribute('fill', '#ffffff');
+                if (i <= lastActiveIndex) lastActiveIndex = i - 1;
             }
         });
     }
 
-    /* ===== INICIALIZACIÓN ===== */
-    drawVariant(1);
-    console.log('Roadmap configurado correctamente');
-}
+    function triggerCelebrationAtCircle(circle){
+        const cx = parseFloat(circle.getAttribute('cx'));
+        const cy = parseFloat(circle.getAttribute('cy'));
+        const client = svgPointToClient(cx, cy);
+        const cardRect = roadmapCard.getBoundingClientRect();
+        const baseLeft = client.x - cardRect.left;
+        const baseTop = client.y - cardRect.top;
 
-// ========== SISTEMA DE MODALES ==========
-function setupModals() {
-    console.log('Configurando modales...');
+        const colors = ['#f87171','#fbbf24','#34d399','#60a5fa','#a78bfa','#fb7185'];
+        const N = 16;
+        for (let i=0;i<N;i++){
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = `${baseLeft + (Math.random()*30-15)}px`;
+            p.style.top = `${baseTop + (Math.random()*20-10)}px`;
+            p.style.background = colors[Math.floor(Math.random()*colors.length)];
+            p.style.opacity = String(0.95 - Math.random()*0.2);
+            p.style.width = p.style.height = `${8 + Math.random()*8}px`;
+            p.style.borderRadius = (Math.random()>.6)? '2px' : '50%';
+            roadmapCard.appendChild(p);
+            setTimeout(()=>{ if(p && p.parentNode) p.parentNode.removeChild(p); }, 1200);
+        }
+    }
+
+    /* ===== EVENT LISTENERS ===== */
     
     // Configurar modal de edición del roadmap
     const editRoadmapBtn = document.getElementById('editRoadmapBtn');
@@ -528,6 +719,7 @@ function setupModals() {
     if (editRoadmapBtn && editRoadmapModal) {
         editRoadmapBtn.addEventListener('click', function() {
             editRoadmapModal.style.display = 'block';
+            if (goalInput) goalInput.value = currentGoal;
         });
     }
 
@@ -537,51 +729,99 @@ function setupModals() {
         });
     }
 
-    if (applyEditBtn && goalInput) {
-        applyEditBtn.addEventListener('click', function() {
-            const newGoal = parseInt(goalInput.value) || 120;
-            if (newGoal > 0) {
-                // Actualizar el objetivo en el roadmap
-                document.getElementById('goalLabel').textContent = newGoal;
-                if (editRoadmapModal) editRoadmapModal.style.display = 'none';
-                showNotification('Cambios aplicados correctamente');
-            }
-        });
-    }
+    // Cerrar modal al hacer clic fuera
+    window.addEventListener('click', function(event) {
+        if (event.target === editRoadmapModal) {
+            editRoadmapModal.style.display = 'none';
+        }
+    });
 
-    if (resetRoadmapBtn) {
-        resetRoadmapBtn.addEventListener('click', function() {
-            document.getElementById('goalLabel').textContent = 120;
-            document.getElementById('depositLabel').textContent = 0;
-            if (goalInput) goalInput.value = 120;
-            if (newDepositInput) newDepositInput.value = '';
-            showNotification('Ruta reiniciada correctamente');
-        });
-    }
-
-    if (addDepositBtn && newDepositInput) {
-        addDepositBtn.addEventListener('click', function() {
-            const additionalDeposit = parseInt(newDepositInput.value) || 0;
-            if (additionalDeposit > 0) {
-                const currentDeposit = parseInt(document.getElementById('depositLabel').textContent);
-                document.getElementById('depositLabel').textContent = currentDeposit + additionalDeposit;
-                newDepositInput.value = '';
-                showNotification(`¡Has agregado $${additionalDeposit} a tu ahorro!`);
-            }
-        });
-    }
-
-    // Configurar selección de estilos
+    // Selección de estilo
     const styleOptions = document.querySelectorAll('.style-option');
     styleOptions.forEach(option => {
         option.addEventListener('click', function() {
             const variant = parseInt(this.getAttribute('data-variant'));
             styleOptions.forEach(opt => opt.classList.remove('selected'));
             this.classList.add('selected');
-            showNotification(`Estilo cambiado a: ${this.querySelector('span').textContent}`);
+            drawVariant(variant);
         });
     });
 
+    // Agregar depósito
+    if (addDepositBtn && newDepositInput) {
+        addDepositBtn.addEventListener('click', function() {
+            const additionalDeposit = parseInt(newDepositInput.value) || 0;
+            if (additionalDeposit > 0) {
+                currentDeposit += additionalDeposit;
+                updateProgressVisual();
+                newDepositInput.value = '';
+                showNotification(`¡Has agregado $${additionalDeposit} a tu ahorro!`);
+            }
+        });
+
+        // Permitir agregar con Enter
+        newDepositInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addDepositBtn.click();
+            }
+        });
+    }
+
+    // Reiniciar ruta
+    if (resetRoadmapBtn) {
+        resetRoadmapBtn.addEventListener('click', function() {
+            currentGoal = 120;
+            currentDeposit = 0;
+            if (goalInput) goalInput.value = currentGoal;
+            if (newDepositInput) newDepositInput.value = '';
+            updateProgressVisual();
+            showNotification('Ruta reiniciada correctamente');
+        });
+    }
+
+    // Aplicar cambios
+    if (applyEditBtn && goalInput) {
+        applyEditBtn.addEventListener('click', function() {
+            const newGoal = parseInt(goalInput.value) || 120;
+            if (newGoal > 0) {
+                currentGoal = newGoal;
+                updateProgressVisual();
+                if (editRoadmapModal) editRoadmapModal.style.display = 'none';
+                showNotification('Cambios aplicados correctamente');
+            }
+        });
+    }
+
+    // Responsive
+    let resizeTimer = null;
+    function handleResize(){
+        if (resizeTimer) clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(()=>{
+            totalLen = bgPath.getTotalLength();
+            progPath.style.strokeDasharray = `${totalLen} ${totalLen}`;
+            const endPt = bgPath.getPointAtLength(totalLen);
+            positionFlag(endPt.x, endPt.y);
+            const circles = Array.from(checkpointsGroup.querySelectorAll('circle.cp'));
+            circles.forEach((c, idx) => {
+                const frac = (idx+1) / circles.length;
+                const pt = bgPath.getPointAtLength(frac * totalLen);
+                c.setAttribute('cx', pt.x);
+                c.setAttribute('cy', pt.y);
+            });
+            updateProgressVisual();
+        }, 120);
+    }
+    window.addEventListener('resize', handleResize);
+
+    /* ===== INICIALIZACIÓN ===== */
+    drawVariant(1);
+    console.log('Roadmap configurado correctamente');
+}
+
+// ========== SISTEMA DE MODALES ==========
+function setupModals() {
+    console.log('Configurando modales...');
+    
     // Configurar modal de amigos
     const socialToggleBtn = document.getElementById('socialToggle');
     const friendsModal = document.getElementById('friendsModal');
@@ -606,7 +846,7 @@ function setupModals() {
     window.addEventListener('click', function(event) {
         const modals = [
             'achievementModal', 'benefitModal', 'addFriendModal', 
-            'friendsModal', 'editRoadmapModal'
+            'friendsModal', 'editRoadmapModal', 'avatarModal'
         ];
         
         modals.forEach(modalId => {
@@ -851,7 +1091,8 @@ function setupChallengeFilters() {
     
     filterBtns.forEach(btn => {
         btn.addEventListener('click', function() {
-            console.log('Filtro clickeado:', this.getAttribute('data-filter'));
+            const filter = this.getAttribute('data-filter');
+            console.log('Filtro clickeado:', filter);
             
             // Remover clase active de todos los botones
             filterBtns.forEach(b => b.classList.remove('active'));
@@ -860,7 +1101,7 @@ function setupChallengeFilters() {
             this.classList.add('active');
             
             // Recargar retos con el filtro aplicado
-            loadChallenges();
+            loadChallenges(filter);
         });
     });
     
@@ -1011,270 +1252,10 @@ window.openChest = openChest;
 window.showAchievementModal = showAchievementModal;
 window.showBenefitModal = showBenefitModal;
 
+// ========== MANEJO DE ERRORES GLOBALES ==========
+window.addEventListener('error', function(e) {
+    console.error('Error global capturado:', e.error);
+    showNotification('Ha ocurrido un error inesperado', 'error');
+});
+
 console.log('JavaScript cargado correctamente');
-// ========== SISTEMA DE TEMA OSCURO ==========
-function setupThemeToggle() {
-    const themeToggle = document.getElementById('themeToggle');
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    
-    // Aplicar tema guardado
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    if (savedTheme === 'dark') {
-        themeToggle.checked = true;
-    }
-    
-    themeToggle.addEventListener('change', function() {
-        if (this.checked) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            showNotification('Tema oscuro activado');
-        } else {
-            document.documentElement.setAttribute('data-theme', 'light');
-            localStorage.setItem('theme', 'light');
-            showNotification('Tema claro activado');
-        }
-    });
-}
-
-// ========== SISTEMA DE AVATAR CON IMÁGENES ==========
-function setupAvatarSystem() {
-    const changeAvatarBtn = document.getElementById('changeAvatarBtn');
-    const avatarModal = document.getElementById('avatarModal');
-    const closeAvatarModal = document.getElementById('closeAvatarModal');
-    const cancelAvatarSelect = document.getElementById('cancelAvatarSelect');
-    const confirmAvatarSelect = document.getElementById('confirmAvatarSelect');
-    const avatarGrid = document.getElementById('avatarGrid');
-    const currentAvatarImg = document.getElementById('currentAvatarImg');
-    
-    // Cargar grid de avatares
-    avatarGrid.innerHTML = '';
-    for (let i = 1; i <= 6; i++) {
-        const avatarOption = document.createElement('div');
-        avatarOption.className = 'avatar-option-modal';
-        avatarOption.setAttribute('data-avatar', `assets/avatar-0${i}.png`);
-        
-        const img = document.createElement('img');
-        img.src = `assets/avatar-0${i}.png`;
-        img.alt = `Avatar ${i}`;
-        img.onerror = function() {
-            // Si la imagen no existe, usar un placeholder
-            this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNDAiIHI9IjIwIiBmaWxsPSIjOERCOUZGIi8+CjxyZWN0IHg9IjI1IiB5PSI3MCIgd2lkdGg9IjUwIiBoZWlnaHQ9IjMwIiBmaWxsPSIjOERCOUZGIi8+Cjwvc3ZnPgo=';
-        };
-        
-        avatarOption.appendChild(img);
-        avatarOption.addEventListener('click', function() {
-            document.querySelectorAll('.avatar-option-modal').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            this.classList.add('selected');
-        });
-        
-        avatarGrid.appendChild(avatarOption);
-    }
-    
-    // Abrir modal
-    changeAvatarBtn.addEventListener('click', function() {
-        avatarModal.style.display = 'block';
-    });
-    
-    // Cerrar modal
-    closeAvatarModal.addEventListener('click', function() {
-        avatarModal.style.display = 'none';
-    });
-    
-    cancelAvatarSelect.addEventListener('click', function() {
-        avatarModal.style.display = 'none';
-    });
-    
-    // Confirmar selección
-    confirmAvatarSelect.addEventListener('click', function() {
-        const selectedAvatar = document.querySelector('.avatar-option-modal.selected');
-        if (selectedAvatar) {
-            const avatarSrc = selectedAvatar.getAttribute('data-avatar');
-            currentAvatarImg.src = avatarSrc;
-            localStorage.setItem('selectedAvatar', avatarSrc);
-            showNotification('Avatar actualizado correctamente');
-            avatarModal.style.display = 'none';
-        } else {
-            showNotification('Por favor selecciona un avatar', 'error');
-        }
-    });
-    
-    // Cargar avatar guardado
-    const savedAvatar = localStorage.getItem('selectedAvatar');
-    if (savedAvatar) {
-        currentAvatarImg.src = savedAvatar;
-    }
-    
-    // Cerrar modal al hacer clic fuera
-    window.addEventListener('click', function(event) {
-        if (event.target === avatarModal) {
-            avatarModal.style.display = 'none';
-        }
-    });
-}
-
-// ========== FILTROS DE RETOS CORREGIDOS ==========
-function setupChallengeFilters() {
-    console.log('Configurando filtros de retos...');
-    
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const filter = this.getAttribute('data-filter');
-            console.log('Filtro clickeado:', filter);
-            
-            // Remover clase active de todos los botones
-            filterBtns.forEach(b => b.classList.remove('active'));
-            
-            // Agregar clase active al botón clickeado
-            this.classList.add('active');
-            
-            // Recargar retos con el filtro aplicado
-            loadChallenges(filter);
-        });
-    });
-    
-    console.log('Filtros configurados para', filterBtns.length, 'botones');
-}
-
-function loadChallenges(activeFilter = 'todos') {
-    const challengesGrid = document.getElementById('challengesGrid');
-    if (!challengesGrid) {
-        console.log('challengesGrid no encontrado');
-        return;
-    }
-    
-    challengesGrid.innerHTML = '';
-    
-    console.log('Filtro activo:', activeFilter);
-    
-    // Filtrar retos
-    const filteredChallenges = challengesData.filter(challenge => {
-        if (activeFilter === 'todos') return true;
-        
-        // Mapear los filtros a los tipos de retos
-        const filterMap = {
-            'diarios': 'diario',
-            'semanales': 'semanal',
-            'mensuales': 'mensual'
-        };
-        
-        return challenge.tipo === filterMap[activeFilter];
-    });
-    
-    console.log('Retos filtrados:', filteredChallenges.length);
-    
-    if (filteredChallenges.length === 0) {
-        challengesGrid.innerHTML = `
-            <div class="no-challenges">
-                <i class="fas fa-inbox"></i>
-                <h3>No hay retos disponibles</h3>
-                <p>No se encontraron retos para el filtro seleccionado.</p>
-            </div>
-        `;
-        return;
-    }
-    
-    filteredChallenges.forEach(challenge => {
-        const challengeCard = document.createElement('div');
-        challengeCard.className = 'challenge-card';
-        challengeCard.setAttribute('data-id', challenge.id);
-        
-        const progressPercentage = Math.round((challenge.progreso / challenge.total) * 100);
-        const isCompleted = challenge.estado === 'completado';
-        const isActive = challenge.estado === 'activo';
-        
-        challengeCard.innerHTML = `
-            <span class="challenge-badge ${challenge.tipo} ${isCompleted ? 'completado' : ''}">${challenge.tipo}</span>
-            <div class="challenge-icon-large">
-                <i class="${challenge.icono}"></i>
-            </div>
-            <div class="challenge-content">
-                <h3 class="challenge-title">${challenge.titulo}</h3>
-                <p class="challenge-description">${challenge.descripcion}</p>
-                
-                <div class="challenge-meta">
-                    <span class="difficulty ${challenge.dificultad}">${challenge.dificultad}</span>
-                    <span>${challenge.progreso}/${challenge.total}</span>
-                </div>
-                
-                <div class="challenge-progress">
-                    <div class="challenge-progress-fill" style="width: ${progressPercentage}%"></div>
-                </div>
-                
-                <div class="challenge-reward">
-                    <span>Recompensa</span>
-                    <span class="reward-points">+${challenge.puntos} pts</span>
-                </div>
-                
-                <div class="challenge-actions">
-                    ${isCompleted ? 
-                        '<button class="action-btn complete-btn" disabled><i class="fas fa-check"></i> Completado</button>' : 
-                        isActive ? 
-                            '<button class="action-btn complete-btn"><i class="fas fa-flag-checkered"></i> Completar</button>' :
-                            '<button class="action-btn start-btn"><i class="fas fa-play"></i> Comenzar</button>'
-                    }
-                </div>
-            </div>
-        `;
-        
-        // Agregar evento para mostrar detalles del reto
-        challengeCard.addEventListener('click', function(e) {
-            if (!e.target.classList.contains('action-btn')) {
-                showChallengeModal(challenge.id);
-            }
-        });
-        
-        // Agregar evento al botón de acción
-        const actionBtn = challengeCard.querySelector('.action-btn');
-        if (actionBtn && !actionBtn.disabled) {
-            actionBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                if (challenge.estado === 'activo') {
-                    completeChallenge(challenge.id);
-                } else if (challenge.estado === 'disponible') {
-                    startChallenge(challenge.id);
-                }
-            });
-        }
-        
-        challengesGrid.appendChild(challengeCard);
-    });
-}
-
-// ========== INICIALIZACIÓN ACTUALIZADA ==========
-function initApp() {
-    console.log('Inicializando aplicación...');
-    
-    // Configurar navegación primero
-    setupNavigation();
-    
-    // Cargar datos iniciales
-    loadAchievements();
-    loadBenefits();
-    loadFriends();
-    loadChallenges('todos'); // Cargar con filtro por defecto
-    
-    // Configurar funcionalidades
-    setupAvatarSelection();
-    setupProfileSave();
-    setupRoadmap();
-    setupModals();
-    setupChallengeFilters();
-    setupChestTimer();
-    updateChestProgress();
-    
-    // Nuevas funcionalidades
-    setupThemeToggle();
-    setupAvatarSystem();
-    
-    // Configurar botón del cofre
-    const openChestBtn = document.getElementById('openChestBtn');
-    if (openChestBtn) {
-        openChestBtn.addEventListener('click', openChest);
-    }
-    
-    console.log('Aplicación inicializada correctamente');
-}
