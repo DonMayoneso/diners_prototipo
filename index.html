@@ -66,69 +66,113 @@
             </header>
             
             <div class="content-area">
-                <!-- Sección Saver -->
-                <section id="saver" class="section active">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title">Mi Meta de Ahorro</h2>
+        <!-- Sección Saver -->
+            <section id="saver" class="section active">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Mi Meta de Ahorro</h2>
+                        <div class="header-actions">
                             <button class="social-toggle-btn" id="socialToggle">
                                 <i class="fas fa-users"></i> Ver Amigos
                             </button>
                         </div>
-                        
-                        <div class="roadmap-container">
-                            <div class="roadmap-card">
-                                <div class="roadmap-header">
+                    </div>
+                    
+                    <div class="roadmap-container">
+                        <div class="roadmap-card">
+                            <div class="roadmap-header">
+                                <div class="roadmap-title-container">
                                     <div class="roadmap-title">TEAM SAVER</div>
-                                    <div class="roadmap-meta">Meta $<span id="goalLabel">120</span> | Vamos $<span id="depositLabel">60</span></div>
-                                </div>
-
-                                <div class="roadmap" id="roadmapWrap">
-                                    <svg id="roadmapSvg" viewBox="0 0 360 420" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-                                        <path id="bgPath" class="bgPath" d=""/>
-                                        <path id="progPath" class="progPath" d=""/>
-                                        <g id="checkpointsGroup" />
-                                        <g id="flagGroup">
-                                            <rect id="pole" class="flagPole" x="0" y="0" width="3" height="30"></rect>
-                                            <polygon id="flagPoly" points="0,0 20,8 0,16"></polygon>
-                                        </g>
-                                    </svg>
-                                </div>
-
-                                <div class="roadmap-controls">
-                                    <label>
-                                        Variante:
-                                        <select id="variantSelect" aria-label="Seleccionar variante">
-                                            <option value="1">1 — Naranja: ascendente</option>
-                                            <option value="2">2 — Verde: zigzag ancho</option>
-                                            <option value="3">3 — Morado: zigzag cerrado</option>
-                                        </select>
-                                    </label>
-
-                                    <div class="controls-row">
-                                        <input id="goalInput" type="number" value="120" min="1" aria-label="Meta en dólares" />
-                                        <input id="depositInput" type="number" value="60" min="0" aria-label="Depositado en dólares" />
-                                        <button class="roadmap-btn" id="applyBtn">Actualizar</button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="friends-panel" id="friendsPanel">
-                                <div class="friends-header">
-                                    <h3>Progreso de Amigos</h3>
-                                    <button class="add-friend-btn" id="addFriendBtn">
-                                        <i class="fas fa-user-plus"></i> Agregar Amigo
+                                    <button class="edit-roadmap-btn" id="editRoadmapBtn">
+                                        <i class="fas fa-edit"></i>
                                     </button>
                                 </div>
-                                <div class="friends-list" id="friendsList">
-                                    <!-- Los amigos se cargarán dinámicamente -->
+                                <div class="roadmap-meta">Meta $<span id="goalLabel">120</span> | Vamos $<span id="depositLabel">60</span></div>
+                            </div>
+
+                            <div class="roadmap" id="roadmapWrap">
+                                <svg id="roadmapSvg" viewBox="0 0 360 420" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                                    <path id="bgPath" class="bgPath" d=""/>
+                                    <path id="progPath" class="progPath" d=""/>
+                                    <g id="checkpointsGroup" />
+                                    <g id="flagGroup">
+                                        <rect id="pole" class="flagPole" x="0" y="0" width="3" height="30"></rect>
+                                        <polygon id="flagPoly" points="0,0 20,8 0,16"></polygon>
+                                    </g>
+                                </svg>
+                            </div>
+
+                            <!-- Panel para agregar monto (siempre visible) -->
+                            <div class="add-deposit-panel">
+                                <h4>Agregar ahorro</h4>
+                                <div class="deposit-controls">
+                                    <input type="number" id="newDepositInput" min="0" placeholder="Monto a agregar" />
+                                    <button class="add-deposit-btn" id="addDepositBtn">Agregar</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
+                </div>
+            </section>
+
+            <!-- Modal de edición del roadmap -->
+            <div class="modal" id="editRoadmapModal">
+                <div class="modal-content">
+                    <span class="close-modal" id="closeEditRoadmapModal">&times;</span>
+                    <h3>Editar Meta de Ahorro</h3>
+                    <div class="modal-body">
+                        <div class="edit-section">
+                            <h4>¿Cuánto es la meta de ahorro?</h4>
+                            <input type="number" id="goalInput" value="120" min="1" placeholder="Meta en dólares" />
+                        </div>
+                        
+                        <div class="edit-section">
+                            <h4>Elige el estilo de tu ruta</h4>
+                            <div class="style-options">
+                                <div class="style-option" data-variant="1">
+                                    <div class="style-preview colina-otonal"></div>
+                                    <span>Colina Otoñal</span>
+                                </div>
+                                <div class="style-option" data-variant="2">
+                                    <div class="style-preview pradera-verde"></div>
+                                    <span>Pradera Verde</span>
+                                </div>
+                                <div class="style-option" data-variant="3">
+                                    <div class="style-preview paseo-nocturno"></div>
+                                    <span>Paseo Nocturno</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="edit-actions">
+                            <button class="reset-btn" id="resetRoadmapBtn">
+                                <i class="fas fa-redo"></i> Reiniciar Ruta
+                            </button>
+                            <button class="apply-btn" id="applyEditBtn">Aplicar Cambios</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de amigos -->
+            <div class="modal" id="friendsModal">
+                <div class="modal-content">
+                    <span class="close-modal" id="closeFriendsModal">&times;</span>
+                    <div class="friends-modal-header">
+                        <h3>Progreso de Amigos</h3>
+                        <button class="add-friend-btn" id="addFriendBtn">
+                            <i class="fas fa-user-plus"></i> Agregar Amigo
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="friends-list" id="friendsList">
+                            <!-- Los amigos se cargarán dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+            </div>
                 
-                                <!-- Sección Retos -->
+                <!-- Sección Retos -->
                 <section id="retos" class="section">
                     <div class="card">
                         <div class="card-header">
@@ -187,11 +231,26 @@
                 <section id="perfil" class="section">
                     <div class="profile-content">
                         <div class="profile-edit">
-                            <h3>Mi Perfil</h3>
-                            <div class="form-group">
-                                <label class="form-label">Avatar</label>
-                                <div class="avatar-selection" id="avatarSelection">
-                                    <!-- Las opciones de avatar se cargarán dinámicamente -->
+                            <div class="profile-header-main">
+                                <h3>Mi Perfil</h3>
+                                <div class="theme-toggle-container">
+                                    <span class="theme-label">Modo Claro</span>
+                                    <label class="theme-switch">
+                                        <input type="checkbox" id="themeToggle">
+                                        <span class="theme-slider"></span>
+                                    </label>
+                                    <span class="theme-label">Modo Oscuro</span>
+                                </div>
+                            </div>
+                            
+                            <div class="profile-picture-section">
+                                <div class="current-avatar">
+                                    <img src="assets/avatar-01.png" alt="Avatar actual" id="currentAvatarImg">
+                                </div>
+                                <div class="avatar-controls">
+                                    <button class="change-avatar-btn" id="changeAvatarBtn">
+                                        <i class="fas fa-camera"></i> Cambiar Avatar
+                                    </button>
                                 </div>
                             </div>
                             
@@ -201,8 +260,16 @@
                             </div>
                             
                             <div class="form-group">
+                                <label class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-input" value="ana.martinez@email.com">
+                            </div>
+                            
+                            <div class="form-group">
                                 <label class="form-label">Meta de Ahorro Mensual</label>
-                                <input type="text" class="form-input" value="$300">
+                                <div class="input-with-icon">
+                                    <span class="input-icon">$</span>
+                                    <input type="text" class="form-input" value="300" style="padding-left: 30px;">
+                                </div>
                             </div>
                             
                             <div class="form-group">
@@ -212,32 +279,103 @@
                                     <option value="pichincha">Banco Pichincha</option>
                                     <option value="guayaquil">Banco Guayaquil</option>
                                     <option value="produbanco">Produbanco</option>
+                                    <option value="bolivariano">Banco Bolivariano</option>
+                                    <option value="internacional">Banco Internacional</option>
                                 </select>
                             </div>
                             
-                            <button class="redeem-btn" id="saveProfileBtn" style="width: 100%;">Guardar Cambios</button>
+                            <div class="form-group">
+                                <label class="form-label">Notificaciones</label>
+                                <div class="notifications-settings">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" checked> Recordatorios de ahorro
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" checked> Progreso de retos
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox"> Noticias y ofertas
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <button class="redeem-btn" id="saveProfileBtn" style="width: 100%;">
+                                <i class="fas fa-save"></i> Guardar Cambios
+                            </button>
                         </div>
                         
                         <div class="profile-stats-large">
-                            <div class="stat-card">
+                            <div class="stats-header">
+                                <h3>Mi Progreso</h3>
+                                <span class="stats-period">Este Mes</span>
+                            </div>
+                            
+                            <div class="stat-card highlight">
+                                <div class="stat-icon">
+                                    <i class="fas fa-piggy-bank"></i>
+                                </div>
                                 <div class="stat-value-large">$1,850</div>
                                 <div class="stat-label">Total Ahorrado</div>
+                                <div class="stat-trend positive">
+                                    <i class="fas fa-arrow-up"></i> 12% este mes
+                                </div>
                             </div>
+                            
                             <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
                                 <div class="stat-value-large">24</div>
                                 <div class="stat-label">Días Consecutivos</div>
+                                <div class="stat-trend positive">
+                                    <i class="fas fa-fire"></i> Racha activa
+                                </div>
                             </div>
+                            
                             <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
                                 <div class="stat-value-large">8</div>
                                 <div class="stat-label">Logros Desbloqueados</div>
+                                <div class="stat-progress">
+                                    <div class="mini-progress-bar">
+                                        <div class="mini-progress-fill" style="width: 53%"></div>
+                                    </div>
+                                    <span>8/15</span>
+                                </div>
                             </div>
+                            
                             <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
                                 <div class="stat-value-large">65%</div>
                                 <div class="stat-label">Progreso Meta Actual</div>
+                                <div class="stat-trend">
+                                    <i class="fas fa-clock"></i> 15 días restantes
+                                </div>
                             </div>
                         </div>
                     </div>
                 </section>
+
+                <!-- Modal de selección de avatar -->
+                <div class="modal" id="avatarModal">
+                    <div class="modal-content">
+                        <span class="close-modal" id="closeAvatarModal">&times;</span>
+                        <h3>Seleccionar Avatar</h3>
+                        <div class="modal-body">
+                            <div class="avatar-grid" id="avatarGrid">
+                                <!-- Los avatares se cargarán dinámicamente -->
+                            </div>
+                            <div class="modal-actions">
+                                <button class="cancel-btn" id="cancelAvatarSelect">Cancelar</button>
+                                <button class="apply-btn" id="confirmAvatarSelect">Aplicar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
         
