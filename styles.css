@@ -2277,3 +2277,377 @@ input:checked + .theme-slider:before {
     0%, 100% { text-shadow: 0 0 5px rgba(124, 58, 237, 0.3); }
     50% { text-shadow: 0 0 15px rgba(124, 58, 237, 0.6); }
 }
+
+/* ========== ESTILOS PARA LOS DOS ROADMAPS ========== */
+.roadmaps-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+@media (max-width: 992px) {
+    .roadmaps-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.personal-roadmap {
+    border-left: 4px solid var(--primary);
+}
+
+.team-roadmap {
+    border-left: 4px solid var(--success);
+}
+
+.team-roadmap .roadmap-title {
+    color: var(--success);
+}
+
+/* ========== INFORMACIÓN DEL EQUIPO ========== */
+.team-info {
+    margin-top: 15px;
+    padding: 15px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.team-members h5 {
+    color: var(--primary);
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.members-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.member-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.member-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--success), #17a689);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.8rem;
+}
+
+.member-name {
+    flex: 1;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.member-contribution {
+    background: var(--success);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.team-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+}
+
+.team-stat {
+    text-align: center;
+    padding: 8px;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* ========== CONFIGURACIÓN DEL EQUIPO EN MODAL ========== */
+.team-settings {
+    margin-top: 20px;
+    padding: 15px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.team-settings h4 {
+    color: var(--primary);
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+
+.invitation-link {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.invitation-link input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.copy-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+}
+
+.copy-btn:hover {
+    background: var(--secondary);
+}
+
+.copy-btn.copied {
+    background: var(--success);
+}
+
+.invite-description {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* ========== VARIANTES ESPECÍFICAS PARA AMBOS ROADMAPS ========== */
+.personal-roadmap.variant-1 .roadmap-title {
+    color: #f59e0b;
+    animation: gentlePulse 3s ease-in-out infinite;
+}
+
+.personal-roadmap.variant-2 .roadmap-title {
+    color: #22c55e;
+    animation: gentleWave 4s ease-in-out infinite;
+}
+
+.personal-roadmap.variant-3 .roadmap-title {
+    color: #7c3aed;
+    animation: gentleGlow 3s ease-in-out infinite;
+}
+
+.team-roadmap.variant-1 .roadmap-title {
+    color: #f59e0b;
+    animation: gentlePulse 3s ease-in-out infinite;
+}
+
+.team-roadmap.variant-2 .roadmap-title {
+    color: #22c55e;
+    animation: gentleWave 4s ease-in-out infinite;
+}
+
+.team-roadmap.variant-3 .roadmap-title {
+    color: #7c3aed;
+    animation: gentleGlow 3s ease-in-out infinite;
+}
+.clickable-card {
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.clickable-card:active {
+    transform: scale(0.98);
+}
+
+.friends-list-container {
+    max-height: 300px;
+    overflow-y: auto;
+}
+/* Estilos del Modal de Redención */
+.redemption-content {
+    text-align: center;
+    max-width: 400px;
+}
+
+.success-animation {
+    margin: 20px auto;
+}
+
+.checkmark-circle {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 50%;
+    background-color: var(--success);
+    animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.checkmark.draw:after {
+    content: '';
+    position: absolute;
+    left: 28px;
+    top: 40px;
+    width: 10px;
+    height: 20px;
+    border: solid white;
+    border-width: 0 4px 4px 0;
+    transform: rotate(45deg) scaleY(-1); /* Start flipped */
+    animation: checkmarkDraw 0.4s 0.3s forwards;
+    opacity: 0;
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+}
+
+@keyframes checkmarkDraw {
+    0% { opacity: 1; height: 0; width: 0; transform: rotate(45deg) translate(-10px, -10px); }
+    100% { opacity: 1; height: 25px; width: 12px; transform: rotate(45deg) translate(0, 0); }
+}
+
+.redemption-title {
+    color: var(--success);
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+}
+
+.redemption-subtitle {
+    color: var(--gray);
+    margin-bottom: 25px;
+}
+
+/* Caja del Cupón */
+.coupon-container {
+    background: var(--bg-secondary);
+    border: 2px dashed var(--border-color);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.coupon-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.code-text {
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--primary);
+    letter-spacing: 2px;
+}
+
+.copy-btn-icon {
+    background: none;
+    border: none;
+    color: var(--gray);
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: color 0.2s;
+}
+
+.copy-btn-icon:hover {
+    color: var(--primary);
+}
+
+.coupon-note {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 5px;
+}
+
+.new-balance-info {
+    margin-bottom: 20px;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.balance-amount {
+    color: var(--primary);
+    font-size: 1.1rem;
+    margin-left: 5px;
+}
+/* ========== NUEVO: Barra de Progreso en Logros ========== */
+.achievement-progress-wrapper {
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 8px;
+}
+
+.achievement-track {
+    width: 100%;
+    height: 6px;
+    background-color: var(--border-color);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.achievement-fill {
+    height: 100%;
+    background-color: var(--primary);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+/* Cambio de color si está completado */
+.achievement-fill.completed {
+    background-color: var(--success);
+}
+
+.achievement-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--gray);
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+/* Ajuste para que el badge no quede pegado */
+.achievement-badge {
+    margin-top: 5px; 
+}
