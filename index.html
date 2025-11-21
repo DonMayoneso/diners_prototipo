@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diners Prototipo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="profile-sidebar">
+            <div class="profile-header">
+                <div class="profile-avatar" style="overflow: hidden;">
+                    <img src="assets/avatar-01.png" alt="Avatar" id="sidebarAvatarImg" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <h2 class="profile-name" id="user-name">Ana Martínez</h2>
+                <span class="profile-level">Nivel 5 - Ahorrista</span>
+            </div>
+            
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <span>Puntos:</span>
+                    <span class="stat-value" id="sidebarPoints">1,250</span>
+                </div>
+                <div class="stat-item">
+                    <span>Ahorro total:</span>
+                    <span class="stat-value">$1,850</span>
+                </div>
+                <div class="stat-item">
+                    <span>Días consecutivos:</span>
+                    <span class="stat-value">24</span>
+                </div>
+                <div class="stat-item">
+                    <span>Logros:</span>
+                    <span class="stat-value">8/15</span>
+                </div>
+            </div>
+            
+            <div class="profile-challenges">
+                <h3>Retos Activos</h3>
+                <div class="challenge-item">
+                    <i class="fas fa-coins challenge-icon"></i>
+                    <span>Ahorra $50 esta semana</span>
+                </div>
+                <div class="challenge-item">
+                    <i class="fas fa-coffee challenge-icon"></i>
+                    <span>Evita gastos hormiga</span>
+                </div>
+                <div class="challenge-item">
+                    <i class="fas fa-piggy-bank challenge-icon"></i>
+                    <span>Completa tu meta mensual</span>
+                </div>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <header class="content-header">
+                <h1 class="section-title" id="current-section">Saver</h1>
+                <div class="points-display">
+                    <i class="fas fa-coins"></i>
+                    <span id="headerPoints">1,250 puntos</span>
+                </div>
+            </header>
+            
+            <div class="content-area">
+                <section id="saver" class="section active">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Mis Metas de Ahorro</h2>
+                            <div class="header-actions">
+                                <button class="social-toggle-btn" id="socialToggle">
+                                    <i class="fas fa-users"></i> Ver Amigos
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="goals-grid" id="goalsContainer">
+                            </div>
+                    </div>
+                </section>
+
+                <section id="retos" class="section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Retos de Ahorro</h2>
+                            <div class="time-filter">
+                                <button class="filter-btn active" data-filter="todos">Todos</button>
+                                <button class="filter-btn" data-filter="diarios">Diarios</button>
+                                <button class="filter-btn" data-filter="semanales">Semanales</button>
+                                <button class="filter-btn" data-filter="mensuales">Mensuales</button>
+                            </div>
+                        </div>
+                        
+                        <div class="challenges-container">
+                            <div class="challenges-grid" id="challengesGrid">
+                                </div>
+                            
+                            <div class="weekly-chest">
+                                <div class="chest-header">
+                                    <h3><i class="fas fa-chest"></i> Cofre de Recompensas Semanal</h3>
+                                    <span class="chest-timer" id="chestTimer">5d 12h 30m</span>
+                                </div>
+                                <div class="chest-content">
+                                    <div class="chest-icon" id="chestIcon">
+                                        <i class="fas fa-lock-open"></i>
+                                    </div>
+                                    <p>Completa 3 retos esta semana para abrir el cofre</p>
+                                    <div class="chest-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" id="chestProgress" style="width: 33%"></div>
+                                        </div>
+                                        <span>1/3 completados</span>
+                                    </div>
+                                    <button class="chest-btn" id="openChestBtn" disabled>Abrir Cofre</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="logros" class="section">
+                    <div class="achievements-grid" id="achievementsGrid">
+                        </div>
+                </section>
+                
+                <section id="beneficios" class="section">
+                    <div class="rewards-grid" id="rewardsGrid">
+                        </div>
+                </section>
+
+                <section id="perfil" class="section">
+                    <div class="mobile-profile-overview" id="mobileProfileOverview">
+                        <div class="mobile-profile-card">
+                            <div class="mobile-profile-header">
+                                <div class="mobile-avatar">
+                                    <img src="assets/avatar-01.png" alt="Ana Martínez" id="mobileProfileAvatar">
+                                </div>
+                                <div class="mobile-profile-info">
+                                    <h3 id="mobileProfileName">Ana Martínez</h3>
+                                    <span class="mobile-profile-level">Nivel 5 - Ahorrista</span>
+                                </div>
+                            </div>
+                            <div class="mobile-profile-stats">
+                                <div class="mobile-stat">
+                                    <div class="mobile-stat-value" id="mobilePoints">1,250</div>
+                                    <div class="mobile-stat-label">Puntos</div>
+                                </div>
+                                <div class="mobile-stat">
+                                    <div class="mobile-stat-value">$1,850</div>
+                                    <div class="mobile-stat-label">Ahorro</div>
+                                </div>
+                                <div class="mobile-stat">
+                                    <div class="mobile-stat-value">24</div>
+                                    <div class="mobile-stat-label">Días</div>
+                                </div>
+                                <div class="mobile-stat">
+                                    <div class="mobile-stat-value">8/15</div>
+                                    <div class="mobile-stat-label">Logros</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-content">
+                        <div class="profile-edit">
+                            <div class="profile-header-main">
+                                <h3>Configuración de Perfil</h3>
+                                <div class="theme-toggle-container">
+                                    <span class="theme-label">Modo Claro</span>
+                                    <label class="theme-switch">
+                                        <input type="checkbox" id="themeToggle">
+                                        <span class="theme-slider"></span>
+                                    </label>
+                                    <span class="theme-label">Modo Oscuro</span>
+                                </div>
+                            </div>
+                            
+                            <div class="profile-picture-section">
+                                <div class="current-avatar">
+                                    <img src="assets/avatar-01.png" alt="Avatar actual" id="currentAvatarImg">
+                                </div>
+                                <div class="avatar-controls">
+                                    <h4>Avatar Personal</h4>
+                                    <p>Selecciona una imagen que te represente</p>
+                                    <button class="change-avatar-btn" id="changeAvatarBtn">
+                                        <i class="fas fa-camera"></i> Cambiar Avatar
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Nombre Completo</label>
+                                <input type="text" class="form-input" id="userNameInput" value="Ana Martínez" placeholder="Ingresa tu nombre">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Correo Electrónico</label>
+                                <input type="email" class="form-input" value="ana.martinez@email.com" placeholder="tu.email@ejemplo.com">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Meta de Ahorro Mensual</label>
+                                <div class="input-with-icon">
+                                    <span class="input-icon">$</span>
+                                    <input type="number" class="form-input" value="300" placeholder="500" style="padding-left: 30px;">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Conectar Cuenta Bancaria</label>
+                                <select class="form-input" id="bankSelect">
+                                    <option value="">Seleccionar banco</option>
+                                    <option value="pichincha">Banco Pichincha</option>
+                                    <option value="guayaquil">Banco Guayaquil</option>
+                                    <option value="produbanco">Produbanco</option>
+                                    <option value="bolivariano">Banco Bolivariano</option>
+                                    <option value="internacional">Banco Internacional</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Preferencias de Notificaciones</label>
+                                <div class="notifications-settings">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" checked> 
+                                        <span class="checkmark"></span>
+                                        Recordatorios de ahorro
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" checked>
+                                        <span class="checkmark"></span>
+                                        Progreso de retos
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                        Noticias y ofertas
+                                    </label>
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" checked>
+                                        <span class="checkmark"></span>
+                                        Actualizaciones de amigos
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="profile-actions">
+                                <button class="save-btn" id="saveProfileBtn">
+                                    <i class="fas fa-save"></i> Guardar Cambios
+                                </button>
+                                <button class="cancel-btn">
+                                    <i class="fas fa-times"></i> Cancelar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-stats-large">
+                            <div class="stats-header">
+                                <h3>Mi Progreso General</h3>
+                                <div class="stats-filter">
+                                    <select class="stats-period-select">
+                                        <option value="month">Este Mes</option>
+                                        <option value="quarter">Este Trimestre</option>
+                                        <option value="year">Este Año</option>
+                                        <option value="all">Todo el Tiempo</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="stats-grid">
+                                <div class="stat-card highlight">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-piggy-bank"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-value-large">$1,850</div>
+                                        <div class="stat-label">Total Ahorrado</div>
+                                        <div class="stat-trend positive">
+                                            <i class="fas fa-arrow-up"></i> 12% vs mes anterior
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-calendar-check"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-value-large">24</div>
+                                        <div class="stat-label">Días Consecutivos</div>
+                                        <div class="stat-trend positive">
+                                            <i class="fas fa-fire"></i> Racha activa
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-trophy"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-value-large">8/15</div>
+                                        <div class="stat-label">Logros Desbloqueados</div>
+                                        <div class="stat-progress">
+                                            <div class="mini-progress-bar">
+                                                <div class="mini-progress-fill" style="width: 53%"></div>
+                                            </div>
+                                            <span class="progress-text">53% completado</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-value-large">65%</div>
+                                        <div class="stat-label">Progreso Meta Actual</div>
+                                        <div class="stat-trend">
+                                            <i class="fas fa-clock"></i> 15 días restantes
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-coins"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-value-large" id="mainPoints">1,250</div>
+                                        <div class="stat-label">Puntos Acumulados</div>
+                                        <div class="stat-trend positive">
+                                            <i class="fas fa-star"></i> Nivel 5
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="stat-card clickable-card" id="profileFriendsCard">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <div class="stat-value-large">3</div>
+                                        <div class="stat-label">Amigos Conectados</div>
+                                        <div class="stat-trend">
+                                            <i class="fas fa-eye"></i> Ver lista completa
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+        
+        <nav class="navbar">
+            <div class="nav-item active" data-target="saver">
+                <i class="fas fa-piggy-bank"></i>
+                <div class="nav-label">Saver</div>
+            </div>
+            <div class="nav-item" data-target="retos">
+                <i class="fas fa-tasks"></i>
+                <div class="nav-label">Retos</div>
+            </div>
+            <div class="nav-item" data-target="logros">
+                <i class="fas fa-trophy"></i>
+                <div class="nav-label">Logros</div>
+            </div>
+            <div class="nav-item" data-target="beneficios">
+                <i class="fas fa-gift"></i>
+                <div class="nav-label">Beneficios</div>
+            </div>
+            <div class="nav-item" data-target="perfil">
+                <i class="fas fa-user"></i>
+                <div class="nav-label">Perfil</div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="modal" id="universalRoadmapModal">
+        <div class="modal-content roadmap-modal-content">
+            <span class="close-modal" id="closeUniversalModal">&times;</span>
+            
+            <div class="roadmap-header-modal">
+                <h2 id="modalGoalTitle">Mi Meta</h2>
+                <div class="roadmap-meta">
+                    Meta $<span id="modalGoalTarget">0</span> | 
+                    Llevas $<span id="modalGoalCurrent">0</span>
+                </div>
+            </div>
+
+            <div class="roadmap-visualization">
+                <svg id="modalRoadmapSvg" viewBox="0 0 360 420" preserveAspectRatio="xMidYMid meet">
+                    <path id="modalBgPath" class="bgPath" d=""/>
+                    <path id="modalProgPath" class="progPath" d=""/>
+                    <g id="modalCheckpointsGroup" />
+                    <g id="modalFlagGroup">
+                        <rect id="modalPole" class="flagPole" x="0" y="0" width="3" height="30"></rect>
+                        <polygon id="modalFlagPoly" points="0,0 20,8 0,16"></polygon>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="roadmap-controls">
+                <div class="control-box">
+                    <h4>Agregar Ahorro</h4>
+                    <div class="deposit-controls">
+                        <input type="number" id="modalDepositInput" placeholder="Monto $" />
+                        <button class="add-deposit-btn" id="modalAddDepositBtn">Agregar</button>
+                    </div>
+                </div>
+
+                <div class="control-box settings-box">
+                    <h4>Configuración</h4>
+                    <div class="settings-row">
+                        <label>Nueva Meta ($):</label>
+                        <input type="number" id="modalEditTargetInput">
+                    </div>
+                    <div class="settings-row">
+                        <label>Estilo:</label>
+                        <div class="mini-style-selector">
+                            <div class="style-dot variant-1" onclick="changeModalVariant(1)"></div>
+                            <div class="style-dot variant-2" onclick="changeModalVariant(2)"></div>
+                            <div class="style-dot variant-3" onclick="changeModalVariant(3)"></div>
+                        </div>
+                    </div>
+                    <button class="apply-btn small" id="modalSaveChangesBtn">Guardar Cambios</button>
+                    <button class="reset-btn small" id="modalDeleteGoalBtn" style="margin-top:10px; width:100%; background:#ef4444; color:white;">Eliminar Meta</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="createGoalModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeCreateGoalModal">&times;</span>
+            <h3>Crear Nueva Meta</h3>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nombre de la Meta</label>
+                    <input type="text" class="form-input" id="newGoalName" placeholder="Ej: Viaje a la playa">
+                </div>
+                <div class="form-group">
+                    <label>Monto Objetivo ($)</label>
+                    <input type="number" class="form-input" id="newGoalTarget" placeholder="500">
+                </div>
+                <div class="form-group">
+                    <label>Estilo Inicial</label>
+                    <select class="form-input" id="newGoalVariant">
+                        <option value="1">Otoño (Naranja)</option>
+                        <option value="2">Pradera (Verde)</option>
+                        <option value="3">Noche (Morado)</option>
+                    </select>
+                </div>
+                <button class="redeem-btn" id="confirmCreateGoal" style="width:100%">Crear Meta</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="achievementModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeAchievementModal">&times;</span>
+            <div class="modal-body" id="achievementModalBody"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="benefitModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeBenefitModal">&times;</span>
+            <div class="modal-body" id="benefitModalBody"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="addFriendModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeAddFriendModal">&times;</span>
+            <h3>Agregar Amigo</h3>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Nombre del amigo</label>
+                    <input type="text" class="form-input" id="friendNameInput" placeholder="Ingresa el nombre">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Meta de ahorro del amigo</label>
+                    <input type="number" class="form-input" id="friendGoalInput" placeholder="Meta en dólares">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Progreso actual</label>
+                    <input type="number" class="form-input" id="friendProgressInput" placeholder="Progreso en dólares">
+                </div>
+                <button class="redeem-btn" id="confirmAddFriend" style="width: 100%;">Agregar Amigo</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="redemptionModal">
+        <div class="modal-content redemption-content">
+            <span class="close-modal" id="closeRedemptionModal">&times;</span>
+            <div class="redemption-body">
+                <div class="success-animation">
+                    <div class="checkmark-circle"><div class="checkmark draw"></div></div>
+                </div>
+                <h3 class="redemption-title">¡Canje Exitoso!</h3>
+                <p class="redemption-subtitle">Has canjeado: <strong id="redeemedItemName">Tarjeta de Regalo</strong></p>
+                <div class="coupon-container">
+                    <p>Tu código de cupón:</p>
+                    <div class="coupon-box">
+                        <span id="couponCode" class="code-text">DINERS-X7K9-2025</span>
+                        <button class="copy-btn-icon" id="copyCouponBtn" title="Copiar código">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="coupon-note">Copia este código y preséntalo en el establecimiento o úsalo en su web.</p>
+                </div>
+                <div class="new-balance-info">
+                    <span>Nuevo saldo:</span>
+                    <span class="balance-amount" id="modalNewBalance">1,050 pts</span>
+                </div>
+                <button class="redeem-btn success-close-btn" id="finishRedemptionBtn">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="avatarModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeAvatarModal">&times;</span>
+            <h3>Selecciona tu Avatar</h3>
+            <div class="modal-body">
+                <div class="avatar-grid" id="avatarGrid"></div>
+                <div class="modal-actions">
+                    <button class="cancel-btn" id="cancelAvatarSelect">Cancelar</button>
+                    <button class="redeem-btn" id="confirmAvatarSelect" style="flex:2;">Confirmar Selección</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="friendsModal">
+        <div class="modal-content">
+            <div class="friends-modal-header">
+                <h3>Mis Amigos</h3>
+                <span class="close-modal" id="closeFriendsModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="friendsList" class="friends-list-container"></div>
+                <button class="redeem-btn" id="openAddFriendFromList" style="margin-top: 20px;">
+                    <i class="fas fa-user-plus"></i> Agregar Nuevo Amigo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
