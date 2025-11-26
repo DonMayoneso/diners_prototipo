@@ -1,4 +1,4 @@
-/* ========== VARIABLES Y CONFIGURACIÓN GLOBAL ========== */
+/*  VARIABLES Y CONFIGURACIÓN GLOBAL  */
 :root {
     --primary: #4e54c8;
     --secondary: #8f94fb;
@@ -52,7 +52,7 @@ body {
     color: var(--text-primary);
 }
 
-/* ========== ESTRUCTURA PRINCIPAL ========== */
+/*  ESTRUCTURA PRINCIPAL  */
 .app-container {
     display: flex;
     width: 100%;
@@ -69,7 +69,7 @@ body {
     background: var(--bg-primary);
 }
 
-/* ========== SIDEBAR DE PERFIL ========== */
+/*  SIDEBAR DE PERFIL  */
 .profile-sidebar {
     width: 280px;
     background: linear-gradient(to bottom, var(--primary), var(--secondary));
@@ -158,7 +158,7 @@ body {
     font-size: 1.2rem;
 }
 
-/* ========== CONTENIDO PRINCIPAL ========== */
+/*  CONTENIDO PRINCIPAL  */
 .main-content {
     flex: 1;
     display: flex;
@@ -211,7 +211,7 @@ body {
     background: var(--bg-secondary);
 }
 
-/* ========== NAVEGACIÓN ========== */
+/*  NAVEGACIÓN  */
 .navbar {
     width: 80px;
     background: var(--bg-primary);
@@ -255,7 +255,7 @@ body {
     font-weight: 500;
 }
 
-/* ========== SECCIONES Y ANIMACIONES ========== */
+/*  SECCIONES Y ANIMACIONES  */
 .section {
     display: none;
 }
@@ -270,7 +270,7 @@ body {
     to { opacity: 1; }
 }
 
-/* ========== TARJETAS DE CONTENIDO ========== */
+/*  TARJETAS DE CONTENIDO  */
 .card {
     background: var(--card-bg);
     border-radius: 15px;
@@ -311,7 +311,7 @@ body {
     align-items: center;
 }
 
-/* ========== SECCIÓN SAVER - ROADMAP ========== */
+/*  SECCIÓN SAVER - ROADMAP  */
 .roadmap-container {
     display: grid;
     grid-template-columns: 1fr;
@@ -457,7 +457,7 @@ body {
     100% { transform: translateY(-70px) scale(0.6); opacity: 0; }
 }
 
-/* ========== PANEL AGREGAR DEPÓSITO ========== */
+/*  PANEL AGREGAR DEPÓSITO  */
 .add-deposit-panel {
     background: #f8fafc;
     border-radius: 12px;
@@ -524,7 +524,7 @@ body {
     background: #17a689;
 }
 
-/* ========== BOTONES Y CONTROLES ========== */
+/*  BOTONES Y CONTROLES  */
 .edit-roadmap-btn {
     background: var(--primary);
     color: white;
@@ -590,7 +590,7 @@ body {
     background: #17a689;
 }
 
-/* ========== MODALES ========== */
+/*  MODALES  */
 .modal {
     display: none;
     position: fixed;
@@ -641,7 +641,7 @@ body {
     padding: 20px 0;
 }
 
-/* ========== MODAL EDICIÓN ROADMAP ========== */
+/*  MODAL EDICIÓN ROADMAP  */
 .edit-section {
     margin-bottom: 20px;
 }
@@ -758,7 +758,7 @@ body {
     background: var(--secondary);
 }
 
-/* ========== MODAL AMIGOS ========== */
+/*  MODAL AMIGOS  */
 .friends-modal-header {
     display: flex;
     justify-content: space-between;
@@ -832,7 +832,7 @@ body {
     font-size: 0.9rem;
 }
 
-/* ========== SECCIÓN RETOS ========== */
+/*  SECCIÓN RETOS  */
 .time-filter {
     display: flex;
     gap: 8px;
@@ -1047,7 +1047,7 @@ body {
     background: #17a689;
 }
 
-/* ========== COFRE SEMANAL ========== */
+/*  COFRE SEMANAL  */
 .weekly-chest {
     background: var(--card-bg);
     border-radius: 15px;
@@ -1163,7 +1163,7 @@ body {
     cursor: not-allowed;
 }
 
-/* ========== SECCIÓN LOGROS ========== */
+/*  SECCIÓN LOGROS  */
 .achievements-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -1238,7 +1238,7 @@ body {
     color: white;
 }
 
-/* ========== SECCIÓN BENEFICIOS ========== */
+/*  SECCIÓN BENEFICIOS  */
 .rewards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -1325,7 +1325,7 @@ body {
     cursor: not-allowed;
 }
 
-/* ========== SECCIÓN PERFIL MEJORADA ========== */
+/*  SECCIÓN PERFIL MEJORADA  */
 .mobile-profile-overview {
     display: none;
     margin-bottom: 20px;
@@ -1416,7 +1416,7 @@ body {
     border: 1px solid var(--border-color);
 }
 
-/* ========== TOGGLE TEMA OSCURO ========== */
+/*  TOGGLE TEMA OSCURO  */
 .profile-header-main {
     display: flex;
     justify-content: space-between;
@@ -1492,7 +1492,7 @@ input:checked + .theme-slider:before {
     transform: translateX(26px);
 }
 
-/* ========== AVATAR Y FORMULARIOS ========== */
+/*  AVATAR Y FORMULARIOS  */
 .profile-picture-section {
     display: flex;
     align-items: center;
@@ -1690,7 +1690,7 @@ input:checked + .theme-slider:before {
     background: var(--gray);
 }
 
-/* ========== ESTADÍSTICAS MEJORADAS ========== */
+/*  ESTADÍSTICAS MEJORADAS  */
 .profile-stats-large {
     background: var(--card-bg);
     border-radius: 15px;
@@ -1834,7 +1834,7 @@ input:checked + .theme-slider:before {
     color: var(--text-secondary);
 }
 
-/* ========== MODAL DE AVATAR ========== */
+/*  MODAL DE AVATAR  */
 .avatar-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1873,7 +1873,7 @@ input:checked + .theme-slider:before {
     margin-top: 20px;
 }
 
-/* ========== MODALES ESPECÍFICOS ========== */
+/*  MODALES ESPECÍFICOS  */
 .modal-achievement {
     text-align: center;
 }
@@ -2028,7 +2028,7 @@ input:checked + .theme-slider:before {
     color: var(--primary);
 }
 
-/* ========== ANIMACIONES DE NOTIFICACIONES ========== */
+/*  ANIMACIONES DE NOTIFICACIONES  */
 @keyframes slideInRight {
     from { transform: translateX(100%); opacity: 0; }
     to { transform: translateX(0); opacity: 1; }
@@ -2039,7 +2039,7 @@ input:checked + .theme-slider:before {
     to { transform: translateX(100%); opacity: 0; }
 }
 
-/* ========== ESTADO CUANDO NO HAY RETOS ========== */
+/*  ESTADO CUANDO NO HAY RETOS  */
 .no-challenges {
     grid-column: 1 / -1;
     text-align: center;
@@ -2058,7 +2058,7 @@ input:checked + .theme-slider:before {
     margin-bottom: 10px;
 }
 
-/* ========== DISEÑO RESPONSIVE ========== */
+/*  DISEÑO RESPONSIVE  */
 @media (max-width: 992px) {
     .app-container {
         flex-direction: column;
@@ -2246,7 +2246,7 @@ input:checked + .theme-slider:before {
     }
 }
 
-/* ========== VARIANTES ESPECÍFICAS PARA TEAM SAVER ========== */
+/*  VARIANTES ESPECÍFICAS PARA TEAM SAVER  */
 .variant-1 .roadmap-title {
     color: #f59e0b;
     animation: gentlePulse 3s ease-in-out infinite;
@@ -2278,7 +2278,7 @@ input:checked + .theme-slider:before {
     50% { text-shadow: 0 0 15px rgba(124, 58, 237, 0.6); }
 }
 
-/* ========== ESTILOS PARA LOS DOS ROADMAPS ========== */
+/*  ESTILOS PARA LOS DOS ROADMAPS  */
 .roadmaps-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -2304,7 +2304,7 @@ input:checked + .theme-slider:before {
     color: var(--success);
 }
 
-/* ========== INFORMACIÓN DEL EQUIPO ========== */
+/*  INFORMACIÓN DEL EQUIPO  */
 .team-info {
     margin-top: 15px;
     padding: 15px;
@@ -2394,7 +2394,7 @@ input:checked + .theme-slider:before {
     color: var(--primary);
 }
 
-/* ========== CONFIGURACIÓN DEL EQUIPO EN MODAL ========== */
+/*  CONFIGURACIÓN DEL EQUIPO EN MODAL  */
 .team-settings {
     margin-top: 20px;
     padding: 15px;
@@ -2453,7 +2453,7 @@ input:checked + .theme-slider:before {
     margin: 0;
 }
 
-/* ========== VARIANTES ESPECÍFICAS PARA AMBOS ROADMAPS ========== */
+/*  VARIANTES ESPECÍFICAS PARA AMBOS ROADMAPS  */
 .personal-roadmap.variant-1 .roadmap-title {
     color: #f59e0b;
     animation: gentlePulse 3s ease-in-out infinite;
@@ -2611,7 +2611,7 @@ input:checked + .theme-slider:before {
     font-size: 1.1rem;
     margin-left: 5px;
 }
-/* ========== NUEVO: Barra de Progreso en Logros ========== */
+/*  NUEVO: Barra de Progreso en Logros  */
 .achievement-progress-wrapper {
     width: 100%;
     margin-top: 15px;
@@ -2651,7 +2651,7 @@ input:checked + .theme-slider:before {
 .achievement-badge {
     margin-top: 5px; 
 }
-/* ========== GRID DE METAS (SAVER DASHBOARD) ========== */
+/*  GRID DE METAS (SAVER DASHBOARD)  */
 .goals-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -2758,7 +2758,7 @@ input:checked + .theme-slider:before {
     margin-bottom: 10px;
 }
 
-/* ========== ESTILOS DEL SUPER MODAL (CORREGIDO) ========== */
+/*  ESTILOS DEL SUPER MODAL (CORREGIDO)  */
 .roadmap-modal-content {
     max-width: 550px; /* Un poco más ancho */
     width: 95%;
@@ -2853,7 +2853,7 @@ input:checked + .theme-slider:before {
 .style-dot.variant-3 { background: #7c3aed; }
 
 .small { font-size: 0.8rem; padding: 8px; }
-/* ========== PERFIL PLEGABLE (RESPONSIVE) ========== */
+/*  PERFIL PLEGABLE (RESPONSIVE)  */
 
 /* Estilos base para la flecha y el título */
 .header-title-group {
@@ -2903,7 +2903,7 @@ input:checked + .theme-slider:before {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
-/* ========== CORRECCIÓN VISIBILIDAD SIDEBAR ========== */
+/*  CORRECCIÓN VISIBILIDAD SIDEBAR  */
 
 .profile-sidebar .stat-value {
     color: #eff0fd !important;
@@ -2913,8 +2913,8 @@ input:checked + .theme-slider:before {
     color: rgba(255, 255, 255, 0.95);
 }
 .profile-sidebar .profile-name {
-    color: #ffffff;
+    color: #eff0fd;
 }
 .profile-sidebar .challenge-item {
-    color: #ffffff;
+    color: #eff0fd;
 }
